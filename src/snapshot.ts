@@ -459,6 +459,7 @@ export function serializeNodeWithId(
   slimDOMOptions: SlimDOMOptions = {},
   recordCanvas?: boolean,
   preserveWhiteSpace = true,
+  onSerialize?: (n: INode) => unknown,
 ): serializedNodeWithId | null {
   const _serializedNode = serializeNode(
     n,
@@ -496,6 +497,9 @@ export function serializeNodeWithId(
     return null; // slimDOM
   }
   map[id] = n as INode;
+  if (onSerialize) {
+    onSerialize(n as INode);
+  }
   let recordChild = !skipChild;
   if (serializedNode.type === NodeType.Element) {
     recordChild = recordChild && !serializedNode.needBlock;
@@ -570,6 +574,8 @@ function snapshot(
   slimDOMSensibleOrOptions: boolean | SlimDOMOptions,
   recordCanvas?: boolean,
   blockSelector: string | null = null,
+  preserveWhiteSpace?: boolean,
+  onSerialize?: (n: INode) => unknown,
 ): [serializedNodeWithId | null, idNodeMap] {
   const idNodeMap: idNodeMap = {};
   const maskInputOptions: MaskInputOptions =
@@ -624,6 +630,8 @@ function snapshot(
       maskInputOptions,
       slimDOMOptions,
       recordCanvas,
+      preserveWhiteSpace,
+      onSerialize,
     ),
     idNodeMap,
   ];
