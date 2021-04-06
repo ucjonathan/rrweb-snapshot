@@ -2,7 +2,7 @@ import { serializedNodeWithId, INode, idNodeMap, MaskInputOptions, SlimDOMOption
 export declare const IGNORED_NODE = -2;
 export declare function absoluteToStylesheet(cssText: string | null, href: string): string;
 export declare function absoluteToDoc(doc: Document, attributeValue: string): string;
-export declare function transformAttribute(doc: Document, name: string, value: string): string;
+export declare function transformAttribute(doc: Document, tagName: string, name: string, value: string): string;
 export declare function _isBlockedElement(element: HTMLElement, blockClass: string | RegExp, blockSelector: string | null): boolean;
 export declare function serializeNodeWithId(n: Node | INode, options: {
     doc: Document;
@@ -15,6 +15,9 @@ export declare function serializeNodeWithId(n: Node | INode, options: {
     slimDOMOptions: SlimDOMOptions;
     recordCanvas?: boolean;
     preserveWhiteSpace?: boolean;
+    onSerialize?: (n: INode) => unknown;
+    onIframeLoad?: (iframeINode: INode, node: serializedNodeWithId) => unknown;
+    iframeLoadTimeout?: number;
 }): serializedNodeWithId | null;
 declare function snapshot(n: Document, options?: {
     blockClass?: string | RegExp;
@@ -23,6 +26,10 @@ declare function snapshot(n: Document, options?: {
     slimDOM?: boolean | SlimDOMOptions;
     recordCanvas?: boolean;
     blockSelector?: string | null;
+    preserveWhiteSpace?: boolean;
+    onSerialize?: (n: INode) => unknown;
+    onIframeLoad?: (iframeINode: INode, node: serializedNodeWithId) => unknown;
+    iframeLoadTimeout?: number;
 }): [serializedNodeWithId | null, idNodeMap];
 export declare function visitSnapshot(node: serializedNodeWithId, onVisit: (node: serializedNodeWithId) => unknown): void;
 export declare function cleanupSnapshot(): void;
